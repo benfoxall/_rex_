@@ -1,4 +1,5 @@
 (function(window){
+	"use strict";
 	
 	var aslice = Array.prototype.slice,
 			events, // the events that are stored
@@ -53,7 +54,7 @@
 	___.prototype.events = function(){
 		//make a clone of the events and return that
 		var clone = {};
-		for(i in events){
+		for(var i in events){
 			if(events.hasOwnProperty(i))
 				clone[i] = aslice.call(events[i]);
 		}
