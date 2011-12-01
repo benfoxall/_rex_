@@ -4,7 +4,9 @@
 	var aslice = Array.prototype.slice,
 			events, // the events that are stored
 			inprogress, // events that are start/stopping
-			dateOffset; // the time offset from the reset tracker
+			dateOffset, // the time offset from the reset tracker
+			emitters, // where/how the events will be sent
+			activeEmitters; // an array of the keys of which to emit
 	
 	// returns millis from start to now
 	var time = function(){
@@ -13,7 +15,7 @@
 	
 	// add an event to the object
 	var add = function(name, timestamp){
-		if(!events[name]) events[name] = []
+		if(!events[name]) events[name] = [];
 		events[name].push(timestamp);
 	};
 	
@@ -44,9 +46,9 @@
 				return function(){
 					var start = time();
 					var returnValue = fn.apply(fn,aslice.call(arguments,0));
-					add(name,[start,time()])
+					add(name,[start,time()]);
 					return returnValue;
-				}
+				};
 			
 		}
 	};
@@ -61,14 +63,42 @@
 		return clone;
 	};
 	
-	// define and call reset 
-	(___.prototype.reset = function(){
+	___.prototype.reset = function(){
 		events = {};
 		inprogress = {};
+		emitters = {};
+		activeEmitters = [];
 		dateOffset = +new Date();
-	})();
+	};
 	
+	// reset the initial tracker
+	___.prototype.reset();
+	
+	
+	// adding of emitters
+	___.prototype.emitter = function(name, fn){
+		emitters[name] = fn;
+	};
+	
+	// enabling an emitter
+	___.prototype.emit = function(name, options){
+		activeEmitters.push([name, options || {}]);
+	}
+	
+	// force flushing to the emitters
+	___.prototype.flush = function(){
+		for (var i=0; i < activeEmitters.length; i++) {
+			var name = activeEmitters[i][0];
+			var settings = activeEmitters[i][1];
+			
+			var emitterfn = emitters[name];
+			if(emitterfn){
+				emitterfn.prototype.options = settings;
+				events = new emitterfn(events) || events;
+			}
+		}
+	};
 	
 	window.___ = ___;
 	
-})(window)
+})(window);

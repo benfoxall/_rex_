@@ -4,6 +4,83 @@ beforeEach ->
   ___().reset()
 
 
+describe 'emitters', ->
+  
+  it 'can accept new emitters', ->
+    
+    ___().emitter 'test', ->
+      
+  it 'will only emit once activated', ->
+      capture = jasmine.createSpy 'capture'
+      ___().emitter 'test', capture
+      ___().flush()
+      
+      expect(capture)
+        .wasNotCalled()
+      
+      # enable the emitter
+      ___().emit 'test'
+      ___().flush()
+      
+      expect(capture)
+        .toHaveBeenCalled()
+  
+  it 'calls emitters on flush', ->
+    
+    capture = jasmine.createSpy 'capture'
+    ___().emitter 'test', capture
+    ___().emit 'test'
+    
+    expect(capture)
+      .wasNotCalled()
+    
+    ___().flush()
+    
+    expect(capture)
+      .toHaveBeenCalled()
+    
+  it 'passes events on to emitter', ->
+    
+    capture = jasmine.createSpy 'capture'
+    ___().emitter 'test', capture
+    ___().emit 'test'
+    
+    ___().flush()
+    
+    expect(capture)
+      .toHaveBeenCalledWith({})
+    
+    ___ 'hello'
+    ___().flush()
+    
+    expect(capture.mostRecentCall.args[0].hello)
+      .toBeDefined('')
+    
+    console.log(capture.mostRecentCall)
+    
+  it 'should update the events as returned from the emitter', ->
+    
+    ___().emitter 'test', -> {test:[20]}
+    ___().emit 'test'
+    
+    expect(___().events()).toEqual({})
+    
+    ___().flush()
+    
+    expect(___().events()).toEqual({test:[20]})
+  
+  it 'should make options be available to the emitter as this.options', ->
+    
+    ___().emitter 'test', -> 
+      expect(this.options.mySetting)
+        .toBe('settingValue');
+    
+    ___().emit 'test', {mySetting:'settingValue'}
+    
+    ___().flush()
+    
+
+
 
 describe "___ client", ->
   
@@ -130,11 +207,3 @@ describe 'start/stop events', ->
       expect(___().events().e1[0].length)
         .toBe(2)
 
-  
-  
-  
-  
-  
-  
-  
-  
