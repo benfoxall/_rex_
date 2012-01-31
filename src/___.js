@@ -76,17 +76,17 @@
 	
 	
 	// adding of emitters
-	___.prototype.emitter = function(name, fn){
+	___.emitter = function(name, fn){
 		emitters[name] = fn;
 	};
 	
 	// enabling an emitter
-	___.prototype.emit = function(name, options){
+	___.emit = function(name, options){
 		activeEmitters.push([name, options || {}]);
 	}
 	
 	// force flushing to the emitters
-	___.prototype.flush = function(){
+	___.flush = function(){
 		for (var i=0; i < activeEmitters.length; i++) {
 			var name = activeEmitters[i][0];
 			var settings = activeEmitters[i][1];
@@ -98,6 +98,16 @@
 			}
 		}
 	};
+	
+	(function poll(){
+		for(var x in events){
+			if(events.hasOwnProperty(x)){
+				___.flush();
+				break;
+			}
+		}
+		setTimeout(poll, 500);
+	})()
 	
 	window.___ = ___;
 	
