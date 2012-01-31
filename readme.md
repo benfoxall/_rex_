@@ -41,3 +41,8 @@ Restart the tracker:
 View the stored events:
 
     ___().events()
+
+
+## Testing
+
+To run the tests, install jasmine and rack-asset-compiler `gem install jasmine rack-asset-compiler` and then run `rake jasmine` to start the server.

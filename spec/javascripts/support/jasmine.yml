@@ -1,0 +1,6 @@
+src_files:
+    - src/___.js
+    - src/emitters/*.js
+
+spec_files:
+  - **/*spec.coffee

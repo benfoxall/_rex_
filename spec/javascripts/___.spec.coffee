@@ -8,19 +8,19 @@ describe 'emitters', ->
   
   it 'can accept new emitters', ->
     
-    ___().emitter 'test', ->
+    ___.emitter 'test', ->
       
   it 'will only emit once activated', ->
       capture = jasmine.createSpy 'capture'
-      ___().emitter 'test', capture
-      ___().flush()
+      ___.emitter 'test', capture
+      ___.flush()
       
       expect(capture)
         .wasNotCalled()
       
       # enable the emitter
-      ___().emit 'test'
-      ___().flush()
+      ___.emit 'test'
+      ___.flush()
       
       expect(capture)
         .toHaveBeenCalled()
@@ -28,13 +28,13 @@ describe 'emitters', ->
   it 'calls emitters on flush', ->
     
     capture = jasmine.createSpy 'capture'
-    ___().emitter 'test', capture
-    ___().emit 'test'
+    ___.emitter 'test', capture
+    ___.emit 'test'
     
     expect(capture)
       .wasNotCalled()
     
-    ___().flush()
+    ___.flush()
     
     expect(capture)
       .toHaveBeenCalled()
@@ -42,16 +42,16 @@ describe 'emitters', ->
   it 'passes events on to emitter', ->
     
     capture = jasmine.createSpy 'capture'
-    ___().emitter 'test', capture
-    ___().emit 'test'
+    ___.emitter 'test', capture
+    ___.emit 'test'
     
-    ___().flush()
+    ___.flush()
     
     expect(capture)
       .toHaveBeenCalledWith({})
     
     ___ 'hello'
-    ___().flush()
+    ___.flush()
     
     expect(capture.mostRecentCall.args[0].hello)
       .toBeDefined('')
@@ -60,24 +60,24 @@ describe 'emitters', ->
     
   it 'should update the events as returned from the emitter', ->
     
-    ___().emitter 'test', -> {test:[20]}
-    ___().emit 'test'
+    ___.emitter 'test', -> {test:[20]}
+    ___.emit 'test'
     
     expect(___().events()).toEqual({})
     
-    ___().flush()
+    ___.flush()
     
     expect(___().events()).toEqual({test:[20]})
   
   it 'should make options be available to the emitter as this.options', ->
     
-    ___().emitter 'test', -> 
+    ___.emitter 'test', -> 
       expect(this.options.mySetting)
         .toBe('settingValue');
     
-    ___().emit 'test', {mySetting:'settingValue'}
+    ___.emit 'test', {mySetting:'settingValue'}
     
-    ___().flush()
+    ___.flush()
     
 
 
@@ -123,10 +123,10 @@ describe "simple logging", ->
       events = ___().events().a
       
       if events.length == 2
-        expect(events[0]/10).
+        expect(events[0]/20).
           toBeCloseTo(0,0)
-        expect(events[1]/10).
-          toBeCloseTo(20,0)
+        expect(events[1]/20).
+          toBeCloseTo(10,0)
         true
       else
         false
