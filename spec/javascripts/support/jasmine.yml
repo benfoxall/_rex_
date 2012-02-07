@@ -1,5 +1,5 @@
 src_files:
- - src/_tracks_.js
+ - src/_rex_.js
  - src/emitters/*.js
 
 spec_files:
