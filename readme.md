@@ -1,4 +1,4 @@
-\_tracks\_ is for logging in javascript
+\_rex\_ is for logging in javascript
 
 (still in early development)
 
@@ -7,9 +7,9 @@
 
 ### basic events
 
-    _tracks_('something happened');
+    _rex_('something happened');
 
-    _tracks_('something else happened');
+    _rex_('something else happened');
 
 … will store these events to a log
 
@@ -17,17 +17,17 @@
 
     var an_fn = function(){…};
 
-    an_fn = _tracks_('fn happened',fn);
+    an_fn = _rex_('fn happened',fn);
 
 … will store the start/finish time of 'an\_fn'
 
 ### start/finish times
 
-    _tracks_('my event','start');
+    _rex_('my event','start');
     
     …some other stuff
     
-    _tracks_('my event','stop');
+    _rex_('my event','stop');
 
 … will store the start/finish time of 'my event'
 
@@ -36,11 +36,11 @@
 
 Restart the tracker:
 
-    _tracks_().reset()
+    _rex_().reset()
 
 View the stored events:
 
-    _tracks_().events()
+    _rex_().events()
 
 
 ## Testing
