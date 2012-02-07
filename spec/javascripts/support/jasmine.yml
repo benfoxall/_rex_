@@ -1,6 +1,6 @@
 src_files:
-    - src/___.js
-    - src/emitters/*.js
+ - src/_tracks_.js
+ - src/emitters/*.js
 
 spec_files:
-  - **/*spec.coffee
+ - **/*spec.coffee
