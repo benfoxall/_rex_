@@ -21,9 +21,9 @@
 	
 	
 	// a new logging event
-	var ___ = function(name, fn){
-		if(!(this instanceof ___))
-			return new ___(name, fn);
+	var _tracks_ = function(name, fn){
+		if(!(this instanceof _tracks_))
+			return new _tracks_(name, fn);
 			
 		// do nothing (for setting options, etc)
 		if(!name)
@@ -53,7 +53,7 @@
 		}
 	};
 	
-	___.prototype.events = function(){
+	_tracks_.prototype.events = function(){
 		//make a clone of the events and return that
 		var clone = {};
 		for(var i in events){
@@ -63,7 +63,7 @@
 		return clone;
 	};
 	
-	___.prototype.reset = function(){
+	_tracks_.prototype.reset = function(){
 		events = {};
 		inprogress = {};
 		emitters = {};
@@ -72,21 +72,21 @@
 	};
 	
 	// reset the initial tracker
-	___.prototype.reset();
+	_tracks_.prototype.reset();
 	
 	
 	// adding of emitters
-	___.emitter = function(name, fn){
+	_tracks_.emitter = function(name, fn){
 		emitters[name] = fn;
 	};
 	
 	// enabling an emitter
-	___.emit = function(name, options){
+	_tracks_.emit = function(name, options){
 		activeEmitters.push([name, options || {}]);
 	}
 	
 	// force flushing to the emitters
-	___.flush = function(){
+	_tracks_.flush = function(){
 		for (var i=0; i < activeEmitters.length; i++) {
 			var name = activeEmitters[i][0];
 			var settings = activeEmitters[i][1];
@@ -102,13 +102,13 @@
 	(function poll(){
 		for(var x in events){
 			if(events.hasOwnProperty(x)){
-				___.flush();
+				_tracks_.flush();
 				break;
 			}
 		}
 		setTimeout(poll, 500);
 	})()
 	
-	window.___ = ___;
+	window._tracks_ = _tracks_;
 	
 })(window);

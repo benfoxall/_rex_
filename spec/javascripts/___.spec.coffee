@@ -1,26 +1,26 @@
 delay = (ms, func) -> setTimeout func, ms
 
 beforeEach ->
-  ___().reset()
+  _tracks_().reset()
 
 
 describe 'emitters', ->
   
   it 'can accept new emitters', ->
     
-    ___.emitter 'test', ->
+    _tracks_.emitter 'test', ->
       
   it 'will only emit once activated', ->
       capture = jasmine.createSpy 'capture'
-      ___.emitter 'test', capture
-      ___.flush()
+      _tracks_.emitter 'test', capture
+      _tracks_.flush()
       
       expect(capture)
         .wasNotCalled()
       
       # enable the emitter
-      ___.emit 'test'
-      ___.flush()
+      _tracks_.emit 'test'
+      _tracks_.flush()
       
       expect(capture)
         .toHaveBeenCalled()
@@ -28,13 +28,13 @@ describe 'emitters', ->
   it 'calls emitters on flush', ->
     
     capture = jasmine.createSpy 'capture'
-    ___.emitter 'test', capture
-    ___.emit 'test'
+    _tracks_.emitter 'test', capture
+    _tracks_.emit 'test'
     
     expect(capture)
       .wasNotCalled()
     
-    ___.flush()
+    _tracks_.flush()
     
     expect(capture)
       .toHaveBeenCalled()
@@ -42,16 +42,16 @@ describe 'emitters', ->
   it 'passes events on to emitter', ->
     
     capture = jasmine.createSpy 'capture'
-    ___.emitter 'test', capture
-    ___.emit 'test'
+    _tracks_.emitter 'test', capture
+    _tracks_.emit 'test'
     
-    ___.flush()
+    _tracks_.flush()
     
     expect(capture)
       .toHaveBeenCalledWith({})
     
-    ___ 'hello'
-    ___.flush()
+    _tracks_ 'hello'
+    _tracks_.flush()
     
     expect(capture.mostRecentCall.args[0].hello)
       .toBeDefined('')
@@ -60,67 +60,67 @@ describe 'emitters', ->
     
   it 'should update the events as returned from the emitter', ->
     
-    ___.emitter 'test', -> {test:[20]}
-    ___.emit 'test'
+    _tracks_.emitter 'test', -> {test:[20]}
+    _tracks_.emit 'test'
     
-    expect(___().events()).toEqual({})
+    expect(_tracks_().events()).toEqual({})
     
-    ___.flush()
+    _tracks_.flush()
     
-    expect(___().events()).toEqual({test:[20]})
+    expect(_tracks_().events()).toEqual({test:[20]})
   
   it 'should make options be available to the emitter as this.options', ->
     
-    ___.emitter 'test', -> 
+    _tracks_.emitter 'test', -> 
       expect(this.options.mySetting)
         .toBe('settingValue');
     
-    ___.emit 'test', {mySetting:'settingValue'}
+    _tracks_.emit 'test', {mySetting:'settingValue'}
     
-    ___.flush()
+    _tracks_.flush()
     
 
 
 
-describe "___ client", ->
+describe "_tracks_ client", ->
   
   it 'is availible', ->
-    expect(___)
+    expect(_tracks_)
       .toBeDefined()
 
   it "has an accessible store of events", ->
  
-    expect(___().events)
+    expect(_tracks_().events)
       .toBeDefined()
-    expect(___().events())
+    expect(_tracks_().events())
       .toEqual({})
   
   it "gives access to a clone of the events", ->
-    # events = ___().events
-    expect(___().events())
-      .toNotBe(___().events())
+    # events = _tracks_().events
+    expect(_tracks_().events())
+      .toNotBe(_tracks_().events())
 
 
 
 describe "simple logging", ->
 
   it "logs an event", ->
-    ___ 'my-event'
+    _tracks_ 'my-event'
     
-    e = ___().events()['my-event']
+    e = _tracks_().events()['my-event']
     
     expect(e)
       .toBeDefined()
       
   it 'stores the time of an event', ->
     
-    ___ 'a'
+    _tracks_ 'a'
     
     delay 200, ->
-      ___ 'a'
+      _tracks_ 'a'
     
     fin = -> 
-      events = ___().events().a
+      events = _tracks_().events().a
       
       if events.length == 2
         expect(events[0]/20).
@@ -136,11 +136,11 @@ describe "simple logging", ->
   
   it "stores multiple events", ->
     
-    ___ 'a'
-    ___ 'a'
-    ___ 'b'
+    _tracks_ 'a'
+    _tracks_ 'a'
+    _tracks_ 'b'
     
-    events = ___().events();
+    events = _tracks_().events();
     
     expect(events.a.length)
       .toBe(2)
@@ -153,7 +153,7 @@ describe "simple logging", ->
 describe 'timed functions', ->
     
   it 'should return a wrapped function', ->
-    fn = ___ 'functEvent', -> 'odelay!'
+    fn = _tracks_ 'functEvent', -> 'odelay!'
 
     expect(fn())
       .toBe('odelay!')
@@ -161,9 +161,9 @@ describe 'timed functions', ->
   
   it 'should be in the events', ->
     
-    (___ 'functEvent', -> )()
+    (_tracks_ 'functEvent', -> )()
     
-    events = ___().events()
+    events = _tracks_().events()
     
     expect(events.functEvent)
       .toBeDefined()
@@ -171,9 +171,9 @@ describe 'timed functions', ->
   
   it 'should still work when reset', ->
     
-    fn = ___ 'functEvent', -> 'odelay!'
+    fn = _tracks_ 'functEvent', -> 'odelay!'
     
-    ___().reset()
+    _tracks_().reset()
     
     expect(fn())
       .toBe('odelay!')
@@ -184,26 +184,26 @@ describe 'start/stop events', ->
 
   it 'should not appear if not stopped', ->
   
-    ___ 'e1', 'start'
+    _tracks_ 'e1', 'start'
     
-    expect(___().events().e1)
+    expect(_tracks_().events().e1)
       .toBeUndefined()
 
   describe 'when stopped', ->
 
     it 'should be logged', ->
       
-      ___ 'e1', 'start'
-      ___ 'e1', 'stop'
+      _tracks_ 'e1', 'start'
+      _tracks_ 'e1', 'stop'
       
-      expect(___().events().e1.length)
+      expect(_tracks_().events().e1.length)
         .toBe(1)
 
     it 'should have start/stop times', ->
       
-      ___ 'e1', 'start'
-      ___ 'e1', 'stop'
+      _tracks_ 'e1', 'start'
+      _tracks_ 'e1', 'stop'
       
-      expect(___().events().e1[0].length)
+      expect(_tracks_().events().e1[0].length)
         .toBe(2)
 

@@ -1,4 +1,4 @@
-\_\_\_ is for logging in javascript
+\_tracks\_ is for logging in javascript
 
 (still in early development)
 
@@ -7,9 +7,9 @@
 
 ### basic events
 
-    ___('something happened');
+    _tracks_('something happened');
 
-    ___('something else happened');
+    _tracks_('something else happened');
 
 … will store these events to a log
 
@@ -17,17 +17,17 @@
 
     var an_fn = function(){…};
 
-    an_fn = ___('fn happened',fn);
+    an_fn = _tracks_('fn happened',fn);
 
 … will store the start/finish time of 'an\_fn'
 
 ### start/finish times
 
-    ___('my event','start');
+    _tracks_('my event','start');
     
     …some other stuff
     
-    ___('my event','stop');
+    _tracks_('my event','stop');
 
 … will store the start/finish time of 'my event'
 
@@ -36,11 +36,11 @@
 
 Restart the tracker:
 
-    ___().reset()
+    _tracks_().reset()
 
 View the stored events:
 
-    ___().events()
+    _tracks_().events()
 
 
 ## Testing
