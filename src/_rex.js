@@ -73,7 +73,11 @@
 	
 	// reset the initial tracker
 	_rex_.prototype.reset();
-	
+
+	// Reset the date offset (keeping all the emitters, etc in place)
+	_rex_.prototype.resetTime = function(){
+		dateOffset = +new Date();
+	};
 	
 	// adding of emitters
 	_rex_.emitter = function(name, fn){
@@ -83,7 +87,7 @@
 	// enabling an emitter
 	_rex_.emit = function(name, options){
 		activeEmitters.push([name, options || {}]);
-	}
+	};
 	
 	// force flushing to the emitters
 	_rex_.flush = function(){
