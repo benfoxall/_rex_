@@ -11,7 +11,7 @@
 
     _rex_('something else happened');
     
-    // include the console emitter file too
+    // include emitters/console.js file too
     _rex_.emit('console');
 
 … will store these events to a log
@@ -45,6 +45,15 @@ View the stored events:
 
     _rex_().events()
 
+
+## Sending events to a server
+
+(Run the the collector node app: `node beacon`)
+
+```js
+// include emitters.beacon file too
+_rex_.emit('beacon', {url:'http://192.168.what.ever:4444'})
+```
 
 ## Testing
 
