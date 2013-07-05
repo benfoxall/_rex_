@@ -10,6 +10,9 @@
     _rex_('something happened');
 
     _rex_('something else happened');
+    
+    // include the console emitter file too
+    _rex_.emit('console');
 
 … will store these events to a log
 
