@@ -1,5 +1,5 @@
-(function(___){
-	___.emitter('console', function(events){
+(function(_rex_){
+	_rex_.emitter('console', function(events){
 		for(var i in events){
 			if(events.hasOwnProperty(i)){
 				for (var j=0; j < events[i].length; j++) {
@@ -19,4 +19,4 @@
 			}
 		}
 	});
-}(___));
+}(_rex_));
