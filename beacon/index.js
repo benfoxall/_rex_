@@ -25,7 +25,7 @@ http.createServer(function (req, res) {
     
     var qs = req.url.substr(split_at + 1);
     try{
-      var json = decodeURI(qs);
+      var json = decodeURIComponent(qs);
       console.log(JSON.parse(json));
     } catch(e){
       console.log('error decoding json:',json, e)
